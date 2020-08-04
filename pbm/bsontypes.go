@@ -20,6 +20,76 @@ type IsMasterLastWrite struct {
 }
 
 // IsMaster represents the document returned by db.runCommand( { isMaster: 1 } )
+/**
+
+mongos
+{
+        "ismaster" : true,
+        "msg" : "isdbgrid",
+        "maxBsonObjectSize" : 16777216,
+        "maxMessageSizeBytes" : 48000000,
+        "maxWriteBatchSize" : 100000,
+        "localTime" : ISODate("2020-07-30T07:07:55.987Z"),
+        "logicalSessionTimeoutMinutes" : 30,
+        "connectionId" : 1015391,
+        "maxWireVersion" : 8,
+        "minWireVersion" : 0,
+        "ok" : 1,
+        "operationTime" : Timestamp(1596092874, 2),
+        "$clusterTime" : {
+                "clusterTime" : Timestamp(1596092874, 2),
+                "signature" : {
+                        "hash" : BinData(0,"6QngecKY9HQ8WyK+TOO+b3e3kcw="),
+                        "keyId" : NumberLong("6836349335383310337")
+                }
+        }
+}
+
+replicaSet
+{
+        "hosts" : [
+                "web-db01cn-p001.pek4.wecash.net:27017",
+                "10.40.9.157:27017",
+                "10.40.9.188:27017"
+        ],
+        "setName" : "haha01",
+        "setVersion" : 10,
+        "ismaster" : true,
+        "secondary" : false,
+        "primary" : "web-db01cn-p001.pek4.wecash.net:27017",
+        "me" : "web-db01cn-p001.pek4.wecash.net:27017",
+        "electionId" : ObjectId("7fffffff000000000000001b"),
+        "lastWrite" : {
+                "opTime" : {
+                        "ts" : Timestamp(1596092708, 1),
+                        "t" : NumberLong(27)
+                },
+                "lastWriteDate" : ISODate("2020-07-30T07:05:08Z"),
+                "majorityOpTime" : {
+                        "ts" : Timestamp(1596092708, 1),
+                        "t" : NumberLong(27)
+                },
+                "majorityWriteDate" : ISODate("2020-07-30T07:05:08Z")
+        },
+        "maxBsonObjectSize" : 16777216,
+        "maxMessageSizeBytes" : 48000000,
+        "maxWriteBatchSize" : 100000,
+        "localTime" : ISODate("2020-07-30T07:05:09.372Z"),
+        "logicalSessionTimeoutMinutes" : 30,
+        "minWireVersion" : 0,
+        "maxWireVersion" : 7,
+        "readOnly" : false,
+        "ok" : 1,
+        "operationTime" : Timestamp(1596092708, 1),
+        "$clusterTime" : {
+                "clusterTime" : Timestamp(1596092708, 1),
+                "signature" : {
+                        "hash" : BinData(0,"0n0sEhSuzpiVvtae62884V9o5zc="),
+                        "keyId" : NumberLong("6820270674339168258")
+                }
+        }
+}
+ */
 type IsMaster struct {
 	Hosts                        []string           `bson:"hosts,omitempty"`
 	Msg                          string             `bson:"msg"`
@@ -47,6 +117,7 @@ type IsMaster struct {
 }
 
 // IsSharded returns true is replset is part sharded cluster
+//  "configsvr" : 2 就是 config server
 func (im *IsMaster) IsSharded() bool {
 	return im.SetName != "" && (im.ConfigServerState != nil || im.ConfigSvr == 2)
 }

@@ -7,10 +7,22 @@ import (
 
 	"github.com/pkg/errors"
 
-	"github.com/percona/percona-backup-mongodb/pbm"
+	"github.com/1399689727/percona-backup-mongodb/pbm"
 )
 
 func restore(cn *pbm.PBM, bcpName string) error {
+	/**
+
+	{
+	"_id" : ObjectId("5f227d2945cc97d95b8bf9e1"),
+	"type" : "restore",
+	"replset" : "haha01",
+	"node" : "web-db01cn-p001.pek4.wecash.net:27017",
+	"backup" : "2020-07-30T07:56:25.015735Z",
+	"hb" : Timestamp(1596095785, 1)
+	}
+
+	 */
 	bcp, err := cn.GetBackupMeta(bcpName)
 	if err != nil {
 		return errors.Wrap(err, "get backup data")

@@ -62,6 +62,8 @@ github.com/mongodb/mongo-tools-common v2.0.1+incompatible h1:7s09mrgAmrbJrkNfj1r
 github.com/mongodb/mongo-tools-common v2.0.1+incompatible/go.mod h1:T0AGIWI5PvxSzqt5zsR5zlcHl52KGeAzhoAnSvvpEtU=
 github.com/opencontainers/go-digest v1.0.0-rc1 h1:WzifXhOVOEOuFYOJAW6aQqW0TooG2iki3E3Ii+WN7gQ=
 github.com/opencontainers/go-digest v1.0.0-rc1/go.mod h1:cMLVZDEM3+U2I4VmLI6N8jQYUd2OVphdqWwCJHrFt2s=
+github.com/percona/percona-backup-mongodb v1.2.1 h1:5r8J+d+RHUg4qdVPLbOtjpUZAOQi9Wg2/WiGf9cC5QE=
+github.com/percona/percona-backup-mongodb v1.2.1/go.mod h1:lH4WHVHBtOamtMN7uTse8saF3bo/cBZmx21y9D639D0=
 github.com/pierrec/lz4 v2.3.0+incompatible h1:CZzRn4Ut9GbUkHlQ7jqBXeZQV41ZSKWFc302ZU6lUTk=
 github.com/pierrec/lz4 v2.3.0+incompatible/go.mod h1:pdkljMzZIN41W+lC3N2tnIh5sFi+IEE17M5jbnwPHcY=
 github.com/pkg/errors v0.8.1 h1:iURUrRGxPUNPdy5/HRSm+Yj6okJ6UtLINN0Q9M4+h3I=

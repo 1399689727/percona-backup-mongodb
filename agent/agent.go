@@ -8,9 +8,9 @@ import (
 
 	"github.com/pkg/errors"
 
-	"github.com/percona/percona-backup-mongodb/pbm"
-	"github.com/percona/percona-backup-mongodb/pbm/backup"
-	"github.com/percona/percona-backup-mongodb/pbm/restore"
+	"github.com/1399689727/percona-backup-mongodb/pbm"
+	"github.com/1399689727/percona-backup-mongodb/pbm/backup"
+	"github.com/1399689727/percona-backup-mongodb/pbm/restore"
 )
 
 type Agent struct {

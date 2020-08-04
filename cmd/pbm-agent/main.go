@@ -10,9 +10,9 @@ import (
 	"github.com/alecthomas/kingpin"
 	"github.com/pkg/errors"
 
-	"github.com/percona/percona-backup-mongodb/agent"
-	"github.com/percona/percona-backup-mongodb/pbm"
-	"github.com/percona/percona-backup-mongodb/version"
+	"github.com/1399689727/percona-backup-mongodb/agent"
+	"github.com/1399689727/percona-backup-mongodb/pbm"
+	"github.com/1399689727/percona-backup-mongodb/version"
 )
 
 func main() {

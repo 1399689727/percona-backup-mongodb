@@ -9,11 +9,25 @@ import (
 	"github.com/pkg/errors"
 	"go.mongodb.org/mongo-driver/mongo"
 
-	"github.com/percona/percona-backup-mongodb/pbm"
+	"github.com/1399689727/percona-backup-mongodb/pbm"
 )
 
+// 		// 2020-07-30T06:44:28Z
 func backup(cn *pbm.PBM, bcpName, compression string) (string, error) {
+	/**
+	replicaSet
+
+	{
+	"_id" : ObjectId("5f227b78d828312830529537"),
+	"type" : "backup",
+	"replset" : "haha01",
+	"node" : "10.40.9.157:27017",
+	"backup" : "2020-07-30T07:49:12Z",
+	"hb" : Timestamp(1596095352, 1)
+	}
+	 */
 	locks, err := cn.GetLocks(&pbm.LockHeader{})
+	fmt.Println(locks)
 	if err != nil {
 		log.Println("get locks", err)
 	}
@@ -30,7 +44,7 @@ func backup(cn *pbm.PBM, bcpName, compression string) (string, error) {
 			return "", errors.Errorf("another operation in progress, %s/%s", l.Type, l.BackupName)
 		}
 	}
-
+	//解析config
 	cfg, err := cn.GetConfig()
 	if err != nil {
 		if err == mongo.ErrNoDocuments {
@@ -38,7 +52,7 @@ func backup(cn *pbm.PBM, bcpName, compression string) (string, error) {
 		}
 		return "", errors.Wrap(err, "get remote-store")
 	}
-
+	// 发送远程命令
 	err = cn.SendCmd(pbm.Cmd{
 		Cmd: pbm.CmdBackup,
 		Backup: pbm.BackupCmd{
@@ -50,8 +64,10 @@ func backup(cn *pbm.PBM, bcpName, compression string) (string, error) {
 		return "", errors.Wrap(err, "send command")
 	}
 
+	// 设置超时时间
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*20)
 	defer cancel()
+	//
 	err = waitForStatus(ctx, cn, bcpName)
 	if err != nil {
 		return "", err

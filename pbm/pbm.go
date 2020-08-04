@@ -14,6 +14,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/readconcern"
 	"go.mongodb.org/mongo-driver/mongo/readpref"
 	"go.mongodb.org/mongo-driver/mongo/writeconcern"
+	"fmt"
 )
 
 const (
@@ -93,6 +94,7 @@ type PBM struct {
 func New(ctx context.Context, uri, appName string) (*PBM, error) {
 	uri = "mongodb://" + strings.Replace(uri, "mongodb://", "", 1)
 
+	// client是连接 mongo后的连接
 	client, err := connect(ctx, uri, appName)
 	if err != nil {
 		return nil, errors.Wrap(err, "create mongo connection")
@@ -103,10 +105,12 @@ func New(ctx context.Context, uri, appName string) (*PBM, error) {
 		ctx:  ctx,
 	}
 	im, err := pbm.GetIsMaster()
+	fmt.Println("New....")
+	fmt.Println(im)
 	if err != nil {
 		return nil, errors.Wrap(err, "get topology")
 	}
-
+	//
 	if !im.IsSharded() || im.ReplsetRole() == ReplRoleConfigSrv {
 		return pbm, errors.Wrap(pbm.setupNewDB(), "setup a new backups db")
 	}
@@ -114,6 +118,9 @@ func New(ctx context.Context, uri, appName string) (*PBM, error) {
 	csvr := struct {
 		URI string `bson:"configsvrConnectionString"`
 	}{}
+	// shard01:PRIMARY
+	// { "_id" : "shardIdentity", "shardName" : "shard01", "clusterId" : ObjectId("5e201c0f5edabb3ad4832c90"),
+	// "configsvrConnectionString" : "configsvr/mgo-monix01sg-p001.sin1.monix.tech:30000,mgo-monix01sg-p002.sin2.monix.tech:30000,mgo-monix01sg-p003.sin3.monix.tech:30000" }
 	err = client.Database("admin").Collection("system.version").
 		FindOne(ctx, bson.D{{"_id", "shardIdentity"}}).Decode(&csvr)
 	if err != nil {

@@ -1,4 +1,4 @@
-module github.com/percona/percona-backup-mongodb
+module github.com/1399689727/percona-backup-mongodb
 
 go 1.13
 

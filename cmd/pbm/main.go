@@ -13,16 +13,17 @@ import (
 	"github.com/alecthomas/kingpin"
 	"github.com/pkg/errors"
 	"go.mongodb.org/mongo-driver/mongo"
-
-	"github.com/percona/percona-backup-mongodb/pbm"
-	"github.com/percona/percona-backup-mongodb/version"
+	"github.com/1399689727/percona-backup-mongodb/pbm"
+	"github.com/1399689727/percona-backup-mongodb/version"
 )
 
 var (
 	pbmCmd = kingpin.New("pbm", "Percona Backup for MongoDB")
 	mURL   = pbmCmd.Flag("mongodb-uri", "MongoDB connection string (Default = PBM_MONGODB_URI environment variable)").String()
 
+	// Command adds a new top-level command.
 	configCmd           = pbmCmd.Command("config", "Set, change or list the config")
+	// Flag defines a new flag with the given long name and help.
 	configRsyncBcpListF = configCmd.Flag("force-resync", "Resync backup list with the current store").Bool()
 	configListF         = configCmd.Flag("list", "List current settings").Bool()
 	configFileF         = configCmd.Flag("file", "Upload config from YAML file").String()
@@ -67,7 +68,8 @@ func main() {
 	if err != nil && cmd != versionCmd.FullCommand() {
 		log.Fatalln("Error: parse command line parameters:", err)
 	}
-
+	fmt.Println("*****")
+	fmt.Println(cmd)
 	if cmd == versionCmd.FullCommand() {
 		switch {
 		case *versionCommit:
@@ -86,7 +88,8 @@ func main() {
 		pbmCmd.Usage(os.Args[1:])
 		os.Exit(1)
 	}
-
+	fmt.Println("*******")
+	fmt.Println(*mURL)
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
@@ -94,6 +97,8 @@ func main() {
 	if err != nil {
 		log.Fatalln("Error: connect to mongodb:", err)
 	}
+
+	fmt.Println(fmt.Sprintf("configCmd.FullCommand() = %s", configCmd.FullCommand()))
 
 	switch cmd {
 	case configCmd.FullCommand():
@@ -136,6 +141,7 @@ func main() {
 	case backupCmd.FullCommand():
 		bcpName := time.Now().UTC().Format(time.RFC3339)
 		fmt.Printf("Starting backup '%s'", bcpName)
+		// 2020-07-30T06:44:28Z
 		storeString, err := backup(pbmClient, bcpName, *bcpCompression)
 		if err != nil {
 			log.Fatalln("\nError starting backup:", err)
